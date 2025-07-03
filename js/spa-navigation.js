@@ -32,10 +32,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Event listeners para navegação
     document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function(e) {
+            e.stopPropagation(); // Impedir propagação do evento
             const page = this.getAttribute('data-page');
             if (page && page !== currentPage) {
                 navigateToPage(page);
+                
+                // Fechar todos os cards virados ao navegar
+                document.querySelectorAll('.nav-group.flipped').forEach(group => {
+                    group.classList.remove('flipped');
+                });
             }
         });
     });
@@ -92,6 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 setupFlipCards();
             }
             
+            // Rolar para o topo da página
+            window.scrollTo(0, 0);
+            
         } catch (error) {
             console.error('Erro ao carregar página:', error);
             showMessage('Erro ao carregar a página. Tente novamente.', 'error');
@@ -135,6 +144,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // Outras páginas: content em tela cheia com botão de voltar
             mainContent.classList.add('fullscreen');
             backButton.classList.add('show');
+            
+            // Remover botões "Sair" das páginas internas
+            setTimeout(() => {
+                const sairButtons = document.querySelectorAll('.content .header .btn-outline-primary');
+                sairButtons.forEach(btn => {
+                    if (btn.innerHTML.includes('Sair')) {
+                        btn.remove();
+                    }
+                });
+            }, 100);
         }
     }
     
