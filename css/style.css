@@ -333,7 +333,7 @@ body {
 /* ===== ESTILOS DA PÁGINA DE BOAS-VINDAS ===== */
 .welcome-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0a4da2 0%, #0f69d7 100%);
   color: white;
   display: flex;
   flex-direction: column;
@@ -439,7 +439,7 @@ body {
   }
 }
 
-/* Novo sistema de navegação com cards agrupados */
+/* Novo sistema de navegação com cards que viram */
 .navigation-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -451,18 +451,8 @@ body {
 }
 
 .nav-group {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.nav-group:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.15);
+  perspective: 1000px;
+  height: 300px;
 }
 
 .nav-group-header {
@@ -471,6 +461,7 @@ body {
   display: flex;
   align-items: center;
   gap: 15px;
+  cursor: pointer;
 }
 
 .nav-group-header i {
@@ -483,11 +474,80 @@ body {
   font-weight: 600;
 }
 
+.nav-group-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.nav-group.flipped .nav-group-card {
+  transform: rotateY(180deg);
+}
+
+.nav-group-front, .nav-group-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.nav-group-front {
+  background: linear-gradient(145deg, rgba(10, 77, 162, 0.8) 0%, rgba(15, 105, 215, 0.8) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.nav-group-back {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-group-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-group-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.nav-group-description {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
 .nav-group-items {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
   padding: 20px;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .nav-item {
@@ -516,6 +576,25 @@ body {
 .nav-item span {
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+.nav-group-back-button {
+  margin: 15px auto;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+}
+
+.nav-group-back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 @keyframes cardsSlideIn {
@@ -642,8 +721,12 @@ body {
     gap: 20px;
   }
 
+  .nav-group {
+    height: 250px;
+  }
+
   .nav-group-items {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 
   .stats-grid {
@@ -672,5 +755,15 @@ body {
   
   .nav-item span {
     font-size: 0.8rem;
+  }
+  
+  .nav-group {
+    height: 220px;
+  }
+  
+  .nav-group-icon {
+    font-size: 3rem;
+    width: 80px;
+    height: 80px;
   }
 }
