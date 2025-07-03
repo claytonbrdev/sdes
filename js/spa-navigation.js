@@ -7,13 +7,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainContent = document.getElementById('mainContent');
     const navLinks = document.querySelectorAll('.nav-link');
     const submenuToggles = document.querySelectorAll('.submenu-toggle');
+    const featureCards = document.querySelectorAll('.feature-card');
     
-    let currentPage = 'dashboard';
+    let currentPage = 'inicio';
     let pageCache = new Map();
     
     // Mapeamento de páginas para arquivos
     const pageFiles = {
-        'dashboard': null, // Dashboard já está carregado
+        'inicio': null, // Página inicial já está carregada
+        'dashboard': 'dashboard.html',
         'cadastro-toners': 'cadastro-toners.html',
         'cadastro-fornecedores': 'cadastro-fornecedores.html',
         'cadastro-filiais': 'cadastro-filiais.html',
@@ -40,18 +42,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Event listeners para cards de funcionalidades
+    featureCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const page = this.getAttribute('data-page');
+            if (page && page !== currentPage) {
+                navigateToPage(page);
+            }
+        });
+    });
+    
     // Event listeners para submenus
     submenuToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            
             const submenu = this.nextElementSibling;
-            const arrow = this.querySelector('.submenu-arrow');
             
             if (submenu && submenu.classList.contains('submenu')) {
-                // Toggle do submenu
-                submenu.classList.toggle('show');
+                // Fechar outros submenus
+                submenuToggles.forEach(otherToggle => {
+                    if (otherToggle !== this) {
+                        const otherSubmenu = otherToggle.nextElementSibling;
+                        if (otherSubmenu && otherSubmenu.classList.contains('submenu')) {
+                            otherSubmenu.classList.remove('show');
+                            otherToggle.classList.remove('expanded');
+                        }
+                    }
+                });
                 
-                // Toggle da seta
+                // Toggle do submenu atual
+                submenu.classList.toggle('show');
                 this.classList.toggle('expanded');
             }
         });
@@ -59,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Event listener para botão de voltar
     backButton.addEventListener('click', function() {
-        navigateToPage('dashboard');
+        navigateToPage('inicio');
     });
     
     // Função principal de navegação
@@ -67,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (page === currentPage) return;
         
         // Verificar se a página existe
-        if (page !== 'dashboard' && !pageFiles[page]) {
+        if (page !== 'inicio' && !pageFiles[page]) {
             showMessage(`Página "${page}" ainda não foi implementada.`, 'error');
             return;
         }
@@ -119,8 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para atualizar layout (mostrar/esconder sidebar)
     function updateLayout(page) {
-        if (page === 'dashboard') {
-            // Dashboard: mostrar sidebar, content com margem
+        if (page === 'inicio') {
+            // Página inicial: mostrar sidebar, content com margem
             sidebar.classList.remove('hidden');
             mainContent.classList.remove('fullscreen');
             backButton.classList.remove('show');
@@ -134,6 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para carregar conteúdo da página
     async function loadPageContent(page) {
+        if (page === 'inicio') {
+            return getInicioContent();
+        }
+        
         if (page === 'dashboard') {
             return getDashboardContent();
         }
@@ -226,12 +252,121 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Função para obter conteúdo da página inicial
+    function getInicioContent() {
+        return `
+            <div class="welcome-container">
+                <!-- Header com botão sair -->
+                <div class="welcome-header">
+                    <button class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-sign-out-alt me-2"></i>Sair
+                    </button>
+                </div>
+
+                <!-- Conteúdo principal de boas-vindas -->
+                <div class="welcome-content">
+                    <div class="welcome-logo">
+                        <div class="logo-circle">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                    </div>
+                    
+                    <h1 class="welcome-title">
+                        Bem-vindo ao <span class="text-primary">SGQ OTI</span>
+                    </h1>
+                    
+                    <p class="welcome-subtitle">
+                        Sistema de Gestão da Qualidade - Otimizando processos e garantindo excelência
+                    </p>
+
+                    <!-- Cards de funcionalidades principais -->
+                    <div class="features-grid">
+                        <div class="feature-card" data-page="dashboard">
+                            <div class="feature-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h3>Dashboard</h3>
+                            <p>Visão geral dos indicadores e métricas do sistema</p>
+                        </div>
+
+                        <div class="feature-card" data-page="cadastro-toners">
+                            <div class="feature-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <h3>Gestão de Toners</h3>
+                            <p>Cadastro e controle completo de toners e suprimentos</p>
+                        </div>
+
+                        <div class="feature-card" data-page="registro-retornados">
+                            <div class="feature-icon">
+                                <i class="fas fa-recycle"></i>
+                            </div>
+                            <h3>Toners Retornados</h3>
+                            <p>Controle e análise de toners retornados</p>
+                        </div>
+
+                        <div class="feature-card" data-page="registrar-garantia">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Garantias</h3>
+                            <p>Gestão completa de garantias e RMA</p>
+                        </div>
+
+                        <div class="feature-card" data-page="me-lembre">
+                            <div class="feature-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3>Me Lembre!</h3>
+                            <p>Sistema de lembretes e notificações</p>
+                        </div>
+
+                        <div class="feature-card" data-page="parametros-retornados">
+                            <div class="feature-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h3>Configurações</h3>
+                            <p>Parâmetros e configurações do sistema</p>
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas rápidas -->
+                    <div class="stats-section">
+                        <h2 class="stats-title">Estatísticas do Sistema</h2>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">1,247</div>
+                                <div class="stat-label">Toners Cadastrados</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">89</div>
+                                <div class="stat-label">Retornados Este Mês</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">15</div>
+                                <div class="stat-label">Garantias Ativas</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">98.5%</div>
+                                <div class="stat-label">Taxa de Qualidade</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="welcome-footer">
+                    <p>&copy; 2025 SGQ OTI - Sistema de Gestão da Qualidade. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        `;
+    }
+    
     // Função para obter conteúdo do dashboard
     function getDashboardContent() {
         return `
             <div class="header">
                 <h2>Dashboard</h2>
-                <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Sair</button>
             </div>
             <div class="row mb-4">
                 <div class="col-md-6"><div class="card p-3"><h5>Gráfico de Auditorias</h5><canvas id="chartAuditorias"></canvas></div></div>
@@ -419,9 +554,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Inicializar gráficos do dashboard na primeira carga
+    // Adicionar event listeners para os cards de funcionalidades após carregar a página inicial
     setTimeout(() => {
-        initDashboardCharts();
+        const newFeatureCards = document.querySelectorAll('.feature-card');
+        newFeatureCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const page = this.getAttribute('data-page');
+                if (page && page !== currentPage) {
+                    navigateToPage(page);
+                }
+            });
+        });
     }, 100);
     
     // Expor função globalmente para uso em outros scripts
