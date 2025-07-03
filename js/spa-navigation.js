@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'cadastro-filiais': 'cadastro-filiais.html',
         'cadastro-setores': 'cadastro-setores.html',
         'cadastro-clientes': 'cadastro-clientes.html',
+        'tipos-defeitos': 'tipos-defeitos.html',
         'titulos-pop-it': 'titulos-pop-it.html',
         'titulos-processos': 'titulos-processos.html',
         'status-garantia': 'status-garantia.html',
@@ -257,11 +258,13 @@ document.addEventListener('DOMContentLoaded', function() {
             'cadastro-filiais': 'js/cadastro-filiais.js',
             'cadastro-setores': 'js/cadastro-setores.js',
             'cadastro-clientes': 'js/cadastro-clientes.js',
+            'tipos-defeitos': 'js/tipos-defeitos.js',
             'titulos-pop-it': 'js/titulos-pop-it.js',
             'titulos-processos': 'js/titulos-processos.js',
             'status-garantia': 'js/status-garantia.js',
             'registro-retornados': 'js/registro-retornados.js',
             'consulta-retornados': 'js/consulta-retornados.js',
+            'registrar-garantia': 'js/registrar-garantia.js',
             'me-lembre': 'js/me-lembre.js',
             'parametros-retornados': 'js/parametros-retornados.js'
         };
@@ -371,6 +374,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="nav-item" data-page="cadastro-clientes">
                                             <i class="fas fa-users"></i>
                                             <span>Clientes</span>
+                                        </div>
+                                        <div class="nav-item" data-page="tipos-defeitos">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <span>Tipos de Defeitos</span>
                                         </div>
                                         <div class="nav-item" data-page="titulos-pop-it">
                                             <i class="fas fa-file-alt"></i>
