@@ -3,11 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageContent = document.getElementById('pageContent');
     const backButton = document.getElementById('backButton');
     const loadingOverlay = document.getElementById('loadingOverlay');
-    const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('mainContent');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const submenuToggles = document.querySelectorAll('.submenu-toggle');
-    const featureCards = document.querySelectorAll('.feature-card');
     
     let currentPage = 'inicio';
     let pageCache = new Map();
@@ -32,49 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     // Event listeners para navegação
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
             const page = this.getAttribute('data-page');
             if (page && page !== currentPage) {
                 navigateToPage(page);
-            }
-        });
-    });
-    
-    // Event listeners para cards de funcionalidades
-    featureCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const page = this.getAttribute('data-page');
-            if (page && page !== currentPage) {
-                navigateToPage(page);
-            }
-        });
-    });
-    
-    // Event listeners para submenus
-    submenuToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const submenu = this.nextElementSibling;
-            
-            if (submenu && submenu.classList.contains('submenu')) {
-                // Fechar outros submenus
-                submenuToggles.forEach(otherToggle => {
-                    if (otherToggle !== this) {
-                        const otherSubmenu = otherToggle.nextElementSibling;
-                        if (otherSubmenu && otherSubmenu.classList.contains('submenu')) {
-                            otherSubmenu.classList.remove('show');
-                            otherToggle.classList.remove('expanded');
-                        }
-                    }
-                });
-                
-                // Toggle do submenu atual
-                submenu.classList.toggle('show');
-                this.classList.toggle('expanded');
             }
         });
     });
@@ -121,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Atualizar estado
             currentPage = page;
-            updateNavigation(page);
             updateLayout(page);
             
             // Carregar scripts específicos da página
@@ -142,13 +99,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para atualizar layout (mostrar/esconder sidebar)
     function updateLayout(page) {
         if (page === 'inicio') {
-            // Página inicial: mostrar sidebar, content com margem
-            sidebar.classList.remove('hidden');
+            // Página inicial: content em tela cheia
             mainContent.classList.remove('fullscreen');
             backButton.classList.remove('show');
         } else {
-            // Outras páginas: esconder sidebar, content em tela cheia
-            sidebar.classList.add('hidden');
+            // Outras páginas: content em tela cheia com botão de voltar
             mainContent.classList.add('fullscreen');
             backButton.classList.add('show');
         }
@@ -279,54 +234,200 @@ document.addEventListener('DOMContentLoaded', function() {
                         Sistema de Gestão da Qualidade - Otimizando processos e garantindo excelência
                     </p>
 
-                    <!-- Cards de funcionalidades principais -->
-                    <div class="features-grid">
-                        <div class="feature-card" data-page="dashboard">
-                            <div class="feature-icon">
-                                <i class="fas fa-tachometer-alt"></i>
-                            </div>
-                            <h3>Dashboard</h3>
-                            <p>Visão geral dos indicadores e métricas do sistema</p>
-                        </div>
-
-                        <div class="feature-card" data-page="cadastro-toners">
-                            <div class="feature-icon">
+                    <!-- Cards de navegação principal -->
+                    <div class="navigation-grid">
+                        <!-- Grupo: Cadastros -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
                                 <i class="fas fa-box"></i>
+                                <h3>Cadastros</h3>
                             </div>
-                            <h3>Gestão de Toners</h3>
-                            <p>Cadastro e controle completo de toners e suprimentos</p>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="cadastro-toners">
+                                    <i class="fas fa-print"></i>
+                                    <span>Toners</span>
+                                </div>
+                                <div class="nav-item" data-page="cadastro-fornecedores">
+                                    <i class="fas fa-truck"></i>
+                                    <span>Fornecedores</span>
+                                </div>
+                                <div class="nav-item" data-page="cadastro-filiais">
+                                    <i class="fas fa-building"></i>
+                                    <span>Filiais</span>
+                                </div>
+                                <div class="nav-item" data-page="cadastro-setores">
+                                    <i class="fas fa-sitemap"></i>
+                                    <span>Setores</span>
+                                </div>
+                                <div class="nav-item" data-page="cadastro-clientes">
+                                    <i class="fas fa-users"></i>
+                                    <span>Clientes</span>
+                                </div>
+                                <div class="nav-item" data-page="titulos-pop-it">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>POP / IT</span>
+                                </div>
+                                <div class="nav-item" data-page="titulos-processos">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span>Processos</span>
+                                </div>
+                                <div class="nav-item" data-page="status-garantia">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Status Garantia</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="feature-card" data-page="registro-retornados">
-                            <div class="feature-icon">
+                        <!-- Grupo: Toners Retornados -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
                                 <i class="fas fa-recycle"></i>
+                                <h3>Toners Retornados</h3>
                             </div>
-                            <h3>Toners Retornados</h3>
-                            <p>Controle e análise de toners retornados</p>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="registro-retornados">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span>Registrar</span>
+                                </div>
+                                <div class="nav-item" data-page="consulta-retornados">
+                                    <i class="fas fa-search"></i>
+                                    <span>Consultar</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="feature-card" data-page="registrar-garantia">
-                            <div class="feature-icon">
+                        <!-- Grupo: Garantias -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
                                 <i class="fas fa-shield-alt"></i>
+                                <h3>Garantias</h3>
                             </div>
-                            <h3>Garantias</h3>
-                            <p>Gestão completa de garantias e RMA</p>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="registrar-garantia">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span>Registrar</span>
+                                </div>
+                                <div class="nav-item" data-page="consulta-garantias">
+                                    <i class="fas fa-search"></i>
+                                    <span>Consultar</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="feature-card" data-page="me-lembre">
-                            <div class="feature-icon">
-                                <i class="fas fa-bell"></i>
+                        <!-- Grupo: Gestão de Documentos -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
+                                <i class="fas fa-folder"></i>
+                                <h3>Documentos</h3>
                             </div>
-                            <h3>Me Lembre!</h3>
-                            <p>Sistema de lembretes e notificações</p>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="registro-documentos">
+                                    <i class="fas fa-file-upload"></i>
+                                    <span>Registrar</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="feature-card" data-page="parametros-retornados">
-                            <div class="feature-icon">
+                        <!-- Grupo: Gestão de POP/IT -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
+                                <i class="fas fa-file-alt"></i>
+                                <h3>POP / IT</h3>
+                            </div>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="registro-pop-it">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Registrar</span>
+                                </div>
+                                <div class="nav-item" data-page="visualizar-pop-it">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Visualizar</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Gestão de Processos -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
+                                <i class="fas fa-project-diagram"></i>
+                                <h3>Processos</h3>
+                            </div>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="registro-processos">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Registrar</span>
+                                </div>
+                                <div class="nav-item" data-page="visualizar-processos">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Visualizar</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Análises -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
+                                <i class="fas fa-chart-pie"></i>
+                                <h3>Análises</h3>
+                            </div>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="analise-ishikawa">
+                                    <i class="fas fa-fish"></i>
+                                    <span>Ishikawa</span>
+                                </div>
+                                <div class="nav-item" data-page="analise-pareto">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Pareto</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Utilitários -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
+                                <i class="fas fa-tools"></i>
+                                <h3>Utilitários</h3>
+                            </div>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="me-lembre">
+                                    <i class="fas fa-bell"></i>
+                                    <span>Me Lembre!</span>
+                                </div>
+                                <div class="nav-item" data-page="dashboard">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>Dashboard</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Configurações -->
+                        <div class="nav-group">
+                            <div class="nav-group-header">
                                 <i class="fas fa-cogs"></i>
+                                <h3>Configurações</h3>
                             </div>
-                            <h3>Configurações</h3>
-                            <p>Parâmetros e configurações do sistema</p>
+                            <div class="nav-group-items">
+                                <div class="nav-item" data-page="perfis-permissoes">
+                                    <i class="fas fa-user-lock"></i>
+                                    <span>Perfis</span>
+                                </div>
+                                <div class="nav-item" data-page="usuarios">
+                                    <i class="fas fa-users-cog"></i>
+                                    <span>Usuários</span>
+                                </div>
+                                <div class="nav-item" data-page="parametros-retornados">
+                                    <i class="fas fa-sliders-h"></i>
+                                    <span>Parâmetros</span>
+                                </div>
+                                <div class="nav-item" data-page="apis">
+                                    <i class="fas fa-plug"></i>
+                                    <span>APIs</span>
+                                </div>
+                                <div class="nav-item" data-page="smtp">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>SMTP</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -381,30 +482,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="col-md-6"><div class="card p-3"><h5>Toners Recuperados por Mês</h5><canvas id="chartTonersRecuperados"></canvas></div></div>
             </div>
         `;
-    }
-    
-    // Função para atualizar navegação
-    function updateNavigation(page) {
-        // Remover classe active de todos os links
-        navLinks.forEach(link => link.classList.remove('active'));
-        
-        // Adicionar classe active ao link atual
-        const activeLink = document.querySelector(`[data-page="${page}"]`);
-        if (activeLink) {
-            activeLink.classList.add('active');
-            
-            // Abrir submenu se necessário
-            const submenu = activeLink.closest('.submenu');
-            if (submenu) {
-                submenu.classList.add('show');
-                
-                // Expandir o toggle do submenu pai
-                const parentToggle = submenu.previousElementSibling;
-                if (parentToggle && parentToggle.classList.contains('submenu-toggle')) {
-                    parentToggle.classList.add('expanded');
-                }
-            }
-        }
     }
     
     // Funções de loading
@@ -554,11 +631,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Adicionar event listeners para os cards de funcionalidades após carregar a página inicial
+    // Adicionar event listeners para os cards de navegação após carregar a página inicial
     setTimeout(() => {
-        const newFeatureCards = document.querySelectorAll('.feature-card');
-        newFeatureCards.forEach(card => {
-            card.addEventListener('click', function() {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
                 const page = this.getAttribute('data-page');
                 if (page && page !== currentPage) {
                     navigateToPage(page);
