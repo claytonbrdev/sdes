@@ -19,6 +19,10 @@ body {
   z-index: 1000;
 }
 
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
+
 .sidebar .logo {
   font-size: 1.6rem;
   font-weight: bold;
@@ -91,6 +95,12 @@ body {
   padding: 30px;
   animation: fadeIn 0.3s ease-in-out;
   min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.content.fullscreen {
+  margin-left: 0;
+  padding: 20px;
 }
 
 @keyframes fadeIn {
@@ -319,32 +329,6 @@ body {
   border: 1px solid #dee2e6;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .content {
-    margin-left: 0;
-    padding: 15px;
-  }
-  
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  
-  .card-body .d-flex.gap-1 {
-    flex-wrap: wrap;
-  }
-  
-  .pagination-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .back-button {
-    top: 10px;
-    right: 10px;
-  }
-}
-
 /* Estilos para notificações */
 .notification-badge {
   position: absolute;
@@ -405,7 +389,7 @@ body {
 .loading-overlay {
   position: fixed;
   top: 0;
-  left: 260px;
+  left: 0;
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.9);
@@ -431,4 +415,34 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+    padding: 15px;
+  }
+  
+  .content.fullscreen {
+    padding: 10px;
+  }
+  
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .card-body .d-flex.gap-1 {
+    flex-wrap: wrap;
+  }
+  
+  .pagination-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .back-button {
+    top: 10px;
+    right: 10px;
+  }
 }

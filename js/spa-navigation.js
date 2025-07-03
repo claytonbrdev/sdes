@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageContent = document.getElementById('pageContent');
     const backButton = document.getElementById('backButton');
     const loadingOverlay = document.getElementById('loadingOverlay');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
     const navLinks = document.querySelectorAll('.nav-link');
     const submenuToggles = document.querySelectorAll('.submenu-toggle');
     
@@ -86,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Atualizar estado
             currentPage = page;
             updateNavigation(page);
+            updateLayout(page);
             
             // Carregar scripts específicos da página
             await loadPageScripts(page);
@@ -100,6 +103,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Esconder loading
         hideLoading();
+    }
+    
+    // Função para atualizar layout (mostrar/esconder sidebar)
+    function updateLayout(page) {
+        if (page === 'dashboard') {
+            // Dashboard: mostrar sidebar, content com margem
+            sidebar.classList.remove('hidden');
+            mainContent.classList.remove('fullscreen');
+        } else {
+            // Outras páginas: esconder sidebar, content em tela cheia
+            sidebar.classList.add('hidden');
+            mainContent.classList.add('fullscreen');
+        }
     }
     
     // Função para carregar conteúdo da página
