@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'titulos-pop-it': 'titulos-pop-it.html',
         'titulos-processos': 'titulos-processos.html',
         'status-garantia': 'status-garantia.html',
+        'controle-homologacao': 'controle-homologacao.html',
         'registro-retornados': 'registro-retornados.html',
         'consulta-retornados': 'consulta-retornados.html',
         'registrar-garantia': 'registrar-garantia.html',
@@ -262,6 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'titulos-pop-it': 'js/titulos-pop-it.js',
             'titulos-processos': 'js/titulos-processos.js',
             'status-garantia': 'js/status-garantia.js',
+            'controle-homologacao': 'js/controle-homologacao.js',
             'registro-retornados': 'js/registro-retornados.js',
             'consulta-retornados': 'js/consulta-retornados.js',
             'registrar-garantia': 'js/registrar-garantia.js',
@@ -390,6 +392,37 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="nav-item" data-page="status-garantia">
                                             <i class="fas fa-shield-alt"></i>
                                             <span>Status Garantia</span>
+                                        </div>
+                                    </div>
+                                    <button class="nav-group-back-button flip-back">
+                                        <i class="fas fa-chevron-left"></i> Voltar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Controle de Homologação -->
+                        <div class="nav-group">
+                            <div class="nav-group-card">
+                                <div class="nav-group-front">
+                                    <div class="nav-group-icon">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </div>
+                                    <h3 class="nav-group-title">Controle de Homologação</h3>
+                                    <p class="nav-group-description">Gerencie o processo de homologação de produtos</p>
+                                    <button class="nav-group-back-button">
+                                        <i class="fas fa-chevron-right"></i> Acessar
+                                    </button>
+                                </div>
+                                <div class="nav-group-back">
+                                    <div class="nav-group-header">
+                                        <i class="fas fa-clipboard-check"></i>
+                                        <h3>Controle de Homologação</h3>
+                                    </div>
+                                    <div class="nav-group-items">
+                                        <div class="nav-item" data-page="controle-homologacao">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Registrar</span>
                                         </div>
                                     </div>
                                     <button class="nav-group-back-button flip-back">

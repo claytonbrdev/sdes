@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGQ OTI - Controle de Homologação</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="content">
+    <div class="header">
+      <h2>Controle de Homologação</h2>
+      <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+    
+    <!-- Formulário de Registro -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Registrar Homologação</h5>
+      </div>
+      <div class="card-body">
+        <form id="formRegistroHomologacao">
+          <!-- Seção 1: Informações Básicas -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <h6 class="text-primary mb-3"><i class="fas fa-info-circle me-2"></i>Informações Básicas</h6>
+            </div>
+            <div class="col-md-4">
+              <label for="numeroNF" class="form-label">Número da NF</label>
+              <input type="text" class="form-control" id="numeroNF" placeholder="Ex: 123456" required>
+            </div>
+            <div class="col-md-4">
+              <label for="codReferencia" class="form-label">Cód. Referência do Produto</label>
+              <input type="text" class="form-control" id="codReferencia" placeholder="Ex: HP CF258A" required>
+            </div>
+            <div class="col-md-4">
+              <label for="tipo" class="form-label">Tipo</label>
+              <select class="form-select" id="tipo" required>
+                <option value="" selected disabled>Selecione o tipo</option>
+                <option value="peça">Peça</option>
+                <option value="toner">Toner</option>
+                <option value="equipamento">Equipamento</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Campo Outro Tipo (aparece quando "outro" é selecionado) -->
+          <div class="row mb-3" id="campoOutroTipo" style="display: none;">
+            <div class="col-md-12">
+              <label for="outroTipo" class="form-label">Especifique o Tipo</label>
+              <input type="text" class="form-control" id="outroTipo" placeholder="Digite o tipo do produto">
+            </div>
+          </div>
+          
+          <!-- Seção 2: Datas e Fornecedor -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <h6 class="text-success mb-3"><i class="fas fa-calendar me-2"></i>Datas e Fornecedor</h6>
+            </div>
+            <div class="col-md-3">
+              <label for="dataRecebimento" class="form-label">Data do Recebimento</label>
+              <input type="date" class="form-control" id="dataRecebimento" required>
+            </div>
+            <div class="col-md-3">
+              <label for="dataInicioHomologacao" class="form-label">Início da Homologação</label>
+              <input type="date" class="form-control" id="dataInicioHomologacao" required>
+            </div>
+            <div class="col-md-3">
+              <label for="dataFinalHomologacao" class="form-label">Data Final da Homologação</label>
+              <input type="date" class="form-control" id="dataFinalHomologacao">
+            </div>
+            <div class="col-md-3">
+              <label for="fornecedor" class="form-label">Fornecedor</label>
+              <select class="form-select" id="fornecedor" required>
+                <option value="">Selecione o fornecedor</option>
+                <!-- Opções carregadas via JavaScript -->
+              </select>
+            </div>
+          </div>
+          
+          <!-- Seção 3: Responsável e Situação -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <h6 class="text-warning mb-3"><i class="fas fa-user-tie me-2"></i>Responsável e Situação</h6>
+            </div>
+            <div class="col-md-6">
+              <label for="responsavel" class="form-label">Responsável</label>
+              <input type="text" class="form-control" id="responsavel" placeholder="Nome do responsável" required>
+            </div>
+            <div class="col-md-6">
+              <label for="situacaoHomologacao" class="form-label">Situação da Homologação</label>
+              <select class="form-select" id="situacaoHomologacao" required>
+                <option value="" selected disabled>Selecione a situação</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Reprovada">Reprovada</option>
+                <option value="Aprovada">Aprovada</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Seção 4: Observações -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <h6 class="text-info mb-3"><i class="fas fa-comment me-2"></i>Observações do Resultado</h6>
+            </div>
+            <div class="col-md-12">
+              <label for="observacaoResultado" class="form-label">Observação do Resultado</label>
+              <textarea class="form-control" id="observacaoResultado" rows="4" placeholder="Descreva os resultados da homologação, testes realizados, problemas encontrados, etc."></textarea>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" id="btnLimpar">
+              <i class="fas fa-eraser me-1"></i>Limpar
+            </button>
+            <button type="button" class="btn btn-primary" id="btnSalvar">
+              <i class="fas fa-save me-1"></i>Registrar Homologação
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Grid de Homologações Registradas -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Homologações Registradas</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-success btn-sm" id="btnImportar">
+            <i class="fas fa-file-import me-1"></i>Importar Excel
+          </button>
+          <button class="btn btn-info btn-sm" id="btnExportar">
+            <i class="fas fa-file-export me-1"></i>Exportar Excel
+          </button>
+          <div class="input-group" style="max-width: 300px;">
+            <input type="text" class="form-control" placeholder="Buscar homologação..." id="buscarHomologacao">
+            <button class="btn btn-outline-secondary" type="button">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>NF</th>
+                <th>Produto</th>
+                <th>Tipo</th>
+                <th>Fornecedor</th>
+                <th>Situação</th>
+                <th>Data Início</th>
+                <th>Data Final</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaHomologacoes">
+              <!-- Os dados serão inseridos via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Controle de paginação -->
+        <div id="paginacao" class="pagination-container">
+          <!-- Controles de paginação serão inseridos via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Modal de Edição -->
+  <div class="modal fade" id="modalEdicao" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Homologação</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEdicao">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="editNumeroNF" class="form-label">Número da NF</label>
+                <input type="text" class="form-control" id="editNumeroNF" required>
+              </div>
+              <div class="col-md-6">
+                <label for="editCodReferencia" class="form-label">Cód. Referência do Produto</label>
+                <input type="text" class="form-control" id="editCodReferencia" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="editResponsavel" class="form-label">Responsável</label>
+                <input type="text" class="form-control" id="editResponsavel" required>
+              </div>
+              <div class="col-md-6">
+                <label for="editSituacaoHomologacao" class="form-label">Situação da Homologação</label>
+                <select class="form-select" id="editSituacaoHomologacao" required>
+                  <option value="Em andamento">Em andamento</option>
+                  <option value="Reprovada">Reprovada</option>
+                  <option value="Aprovada">Aprovada</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="editDataFinalHomologacao" class="form-label">Data Final da Homologação</label>
+                <input type="date" class="form-control" id="editDataFinalHomologacao">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="editObservacaoResultado" class="form-label">Observação do Resultado</label>
+              <textarea class="form-control" id="editObservacaoResultado" rows="4"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnSalvarEdicao">Salvar Alterações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de Confirmação de Exclusão -->
+  <div class="modal fade" id="modalExclusao" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmar Exclusão</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir esta homologação?</p>
+          <p class="text-muted">Esta ação não pode ser desfeita.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de Detalhes -->
+  <div class="modal fade" id="modalDetalhes" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Detalhes da Homologação</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalDetalhesBody">
+          <!-- Conteúdo será inserido via JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
