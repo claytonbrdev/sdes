@@ -3,11 +3,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Elementos do formulário
     const form = document.getElementById('formCadastroToner');
+    const modelo = document.getElementById('modelo');
+    const capacidadeFolhas = document.getElementById('capacidadeFolhas');
     const pesoCheio = document.getElementById('pesoCheio');
     const pesoVazio = document.getElementById('pesoVazio');
     const valorToner = document.getElementById('valorToner');
-    const capacidadeFolhas = document.getElementById('capacidadeFolhas');
+    const cor = document.getElementById('cor');
+    const tipo = document.getElementById('tipo');
     const gramaturaToner = document.getElementById('gramaturaToner');
+    const gramaturaFolha = document.getElementById('gramaturaFolha');
     const custoPagina = document.getElementById('custoPagina');
     
     // Botões
@@ -34,28 +38,59 @@ document.addEventListener('DOMContentLoaded', function() {
     carregarDoLocalStorage();
     
     // Event listeners para cálculos automáticos
-    pesoCheio.addEventListener('input', calcularGramatura);
-    pesoVazio.addEventListener('input', calcularGramatura);
+    pesoCheio.addEventListener('input', calcularGramaturaToner);
+    pesoVazio.addEventListener('input', calcularGramaturaToner);
     valorToner.addEventListener('input', calcularCustoPagina);
-    capacidadeFolhas.addEventListener('input', calcularCustoPagina);
+    capacidadeFolhas.addEventListener('input', function() {
+        calcularGramaturaFolha();
+        calcularCustoPagina();
+    });
     
     // Event listeners para botões
     btnLimpar.addEventListener('click', limparFormulario);
     btnSalvar.addEventListener('click', salvarToner);
     buscarToner.addEventListener('input', filtrarTabela);
-    closeMessage.addEventListener('click', fecharMensagem);
+    
+    if (closeMessage) {
+        closeMessage.addEventListener('click', fecharMensagem);
+    }
     
     // Função para calcular a gramatura do toner
-    function calcularGramatura() {
+    function calcularGramaturaToner() {
         if (pesoCheio.value && pesoVazio.value) {
             const peso1 = parseFloat(pesoCheio.value);
             const peso2 = parseFloat(pesoVazio.value);
             
             if (!isNaN(peso1) && !isNaN(peso2) && peso1 >= peso2) {
-                gramaturaToner.value = (peso1 - peso2).toFixed(2);
+                const gramatura = peso1 - peso2;
+                gramaturaToner.value = gramatura.toFixed(2);
+                
+                // Recalcular gramatura por folha se a capacidade estiver preenchida
+                calcularGramaturaFolha();
             } else {
                 gramaturaToner.value = '';
+                gramaturaFolha.value = '';
             }
+        } else {
+            gramaturaToner.value = '';
+            gramaturaFolha.value = '';
+        }
+    }
+    
+    // Função para calcular a gramatura por folha
+    function calcularGramaturaFolha() {
+        if (gramaturaToner.value && capacidadeFolhas.value) {
+            const gramatura = parseFloat(gramaturaToner.value);
+            const capacidade = parseFloat(capacidadeFolhas.value);
+            
+            if (!isNaN(gramatura) && !isNaN(capacidade) && capacidade > 0) {
+                const gramaturaFolhaCalc = gramatura / capacidade;
+                gramaturaFolha.value = gramaturaFolhaCalc.toFixed(4);
+            } else {
+                gramaturaFolha.value = '';
+            }
+        } else {
+            gramaturaFolha.value = '';
         }
     }
     
@@ -66,10 +101,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const capacidade = parseFloat(capacidadeFolhas.value);
             
             if (!isNaN(valor) && !isNaN(capacidade) && capacidade > 0) {
-                custoPagina.value = (valor / capacidade).toFixed(4);
+                const custo = valor / capacidade;
+                custoPagina.value = custo.toFixed(4);
             } else {
                 custoPagina.value = '';
             }
+        } else {
+            custoPagina.value = '';
         }
     }
     
@@ -77,7 +115,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function limparFormulario() {
         form.reset();
         gramaturaToner.value = '';
+        gramaturaFolha.value = '';
         custoPagina.value = '';
+        editingId = null;
+        
+        // Remover classes de validação
+        form.querySelectorAll('.is-invalid').forEach(el => {
+            el.classList.remove('is-invalid');
+        });
     }
     
     // Função para salvar ou atualizar um toner
@@ -92,14 +137,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const toner = {
             id: tonerId,
-            modelo: document.getElementById('modelo').value,
+            modelo: modelo.value.trim(),
             capacidadeFolhas: parseInt(capacidadeFolhas.value),
             pesoCheio: parseFloat(pesoCheio.value),
             pesoVazio: parseFloat(pesoVazio.value),
             valorToner: parseFloat(valorToner.value),
-            cor: document.getElementById('cor').value,
-            tipo: document.getElementById('tipo').value,
+            cor: cor.value,
+            tipo: tipo.value,
             gramaturaToner: parseFloat(gramaturaToner.value),
+            gramaturaFolha: parseFloat(gramaturaFolha.value),
             custoPagina: parseFloat(custoPagina.value)
         };
         
@@ -122,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
         mostrarMensagem(msg, 'success');
         
         // Limpar formulário e resetar estado de edição
-        editingId = null;
         limparFormulario();
     }
     
@@ -144,7 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validações específicas
         if (parseFloat(pesoCheio.value) <= parseFloat(pesoVazio.value)) {
             pesoCheio.classList.add('is-invalid');
-            alert('O peso cheio deve ser maior que o peso vazio.');
+            pesoVazio.classList.add('is-invalid');
+            mostrarMensagem('O peso cheio deve ser maior que o peso vazio.', 'error');
             valido = false;
         }
         
@@ -153,6 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para mostrar mensagem modal
     function mostrarMensagem(texto, tipo) {
+        if (!messageModal || !messageText) return;
+        
         messageText.textContent = texto;
         
         // Remover classes anteriores
@@ -163,10 +211,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Atualizar ícone
         const messageIcon = messageModal.querySelector('.message-icon i');
-        if (tipo === 'success') {
-            messageIcon.className = 'fas fa-check-circle';
-        } else {
-            messageIcon.className = 'fas fa-exclamation-circle';
+        if (messageIcon) {
+            if (tipo === 'success') {
+                messageIcon.className = 'fas fa-check-circle';
+            } else {
+                messageIcon.className = 'fas fa-exclamation-circle';
+            }
         }
         
         // Mostrar modal
@@ -180,7 +230,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para fechar mensagem modal
     function fecharMensagem() {
-        messageModal.classList.remove('show');
+        if (messageModal) {
+            messageModal.classList.remove('show');
+        }
     }
     
     // Função para atualizar a tabela de toners com paginação
@@ -220,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td><span class="badge ${getBadgeColorClass(toner.cor)}">${toner.cor}</span></td>
                 <td>${toner.tipo}</td>
                 <td>${toner.gramaturaToner.toFixed(2)} g</td>
+                <td>${toner.gramaturaFolha.toFixed(4)} g</td>
                 <td>R$ ${toner.custoPagina.toFixed(4)}</td>
                 <td>
                     <button class="btn btn-sm btn-info me-1" onclick="editarToner(${toner.id})">
@@ -334,6 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     cor: 'Black',
                     tipo: 'Original',
                     gramaturaToner: 500.30,
+                    gramaturaFolha: 0.1668,
                     custoPagina: 0.1067
                 },
                 {
@@ -346,6 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     cor: 'Cyan',
                     tipo: 'Compatível',
                     gramaturaToner: 400.20,
+                    gramaturaFolha: 0.1740,
                     custoPagina: 0.1217
                 }
             ];
@@ -365,16 +420,17 @@ document.addEventListener('DOMContentLoaded', function() {
     window.editarToner = function(id) {
         const toner = toners.find(t => t.id === id);
         if (toner) {
-            document.getElementById('modelo').value = toner.modelo;
-            document.getElementById('capacidadeFolhas').value = toner.capacidadeFolhas;
-            document.getElementById('pesoCheio').value = toner.pesoCheio;
-            document.getElementById('pesoVazio').value = toner.pesoVazio;
-            document.getElementById('valorToner').value = toner.valorToner;
-            document.getElementById('cor').value = toner.cor;
-            document.getElementById('tipo').value = toner.tipo;
-            document.getElementById('gramaturaToner').value = toner.gramaturaToner.toFixed(2);
-            document.getElementById('custoPagina').value = toner.custoPagina.toFixed(4);
-            
+            editingId = id;
+            modelo.value = toner.modelo;
+            capacidadeFolhas.value = toner.capacidadeFolhas;
+            pesoCheio.value = toner.pesoCheio;
+            pesoVazio.value = toner.pesoVazio;
+            valorToner.value = toner.valorToner;
+            cor.value = toner.cor;
+            tipo.value = toner.tipo;
+            gramaturaToner.value = toner.gramaturaToner.toFixed(2);
+            gramaturaFolha.value = toner.gramaturaFolha.toFixed(4);
+            custoPagina.value = toner.custoPagina.toFixed(4);
         }
     };
     
@@ -384,23 +440,6 @@ document.addEventListener('DOMContentLoaded', function() {
             salvarNoLocalStorage();
             atualizarTabela();
             mostrarMensagem('Toner excluído com sucesso!', 'success');
-        }
-    };
-    
-    window.editarToner = function(id) {
-        const toner = toners.find(t => t.id === id);
-        if (toner) {
-            document.getElementById('modelo').value = toner.modelo;
-            document.getElementById('capacidadeFolhas').value = toner.capacidadeFolhas;
-            document.getElementById('pesoCheio').value = toner.pesoCheio;
-            document.getElementById('pesoVazio').value = toner.pesoVazio;
-            document.getElementById('valorToner').value = toner.valorToner;
-            document.getElementById('cor').value = toner.cor;
-            document.getElementById('tipo').value = toner.tipo;
-            document.getElementById('gramaturaToner').value = toner.gramaturaToner.toFixed(2);
-            document.getElementById('custoPagina').value = toner.custoPagina.toFixed(4);
-            
-
         }
     };
 });
