@@ -31,20 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFlipCards();
     
     // Event listeners para navegação
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.stopPropagation(); // Impedir propagação do evento
-            const page = this.getAttribute('data-page');
-            if (page && page !== currentPage) {
-                navigateToPage(page);
-                
-                // Fechar todos os cards virados ao navegar
-                document.querySelectorAll('.nav-group.flipped').forEach(group => {
-                    group.classList.remove('flipped');
-                });
-            }
-        });
-    });
+    setupNavigation();
     
     // Event listener para botão de voltar
     backButton.addEventListener('click', function() {
@@ -96,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Configurar cards que viram se estiver na página inicial
             if (page === 'inicio') {
                 setupFlipCards();
+                setupNavigation();
             }
             
             // Rolar para o topo da página
@@ -119,6 +107,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.nav-group-front .nav-group-back-button').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.stopPropagation();
+                
+                // Fechar todos os outros cards abertos primeiro
+                document.querySelectorAll('.nav-group.flipped').forEach(group => {
+                    if (group !== this.closest('.nav-group')) {
+                        group.classList.remove('flipped');
+                    }
+                });
+                
                 const navGroup = this.closest('.nav-group');
                 navGroup.classList.add('flipped');
             });
@@ -130,6 +126,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.stopPropagation();
                 const navGroup = this.closest('.nav-group');
                 navGroup.classList.remove('flipped');
+            });
+        });
+    }
+    
+    // Configurar navegação
+    function setupNavigation() {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation(); // Impedir propagação do evento
+                const page = this.getAttribute('data-page');
+                if (page && page !== currentPage) {
+                    navigateToPage(page);
+                    
+                    // Fechar todos os cards virados ao navegar
+                    document.querySelectorAll('.nav-group.flipped').forEach(group => {
+                        group.classList.remove('flipped');
+                    });
+                }
             });
         });
     }
@@ -207,6 +221,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para carregar scripts específicos da página
     async function loadPageScripts(page) {
+        // Carregar script.js primeiro (comum a todas as páginas)
+        await loadScript('js/script.js');
+        
         const scriptMap = {
             'cadastro-toners': 'js/cadastro-toners.js',
             'cadastro-fornecedores': 'js/cadastro-fornecedores.js',
@@ -224,23 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const scriptFile = scriptMap[page];
         if (scriptFile) {
-            // Remover script anterior se existir
-            const existingScript = document.querySelector(`script[src="${scriptFile}"]`);
-            if (existingScript) {
-                existingScript.remove();
-            }
-            
-            // Carregar novo script
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = scriptFile;
-                script.onload = resolve;
-                script.onerror = () => {
-                    console.warn(`Script ${scriptFile} não encontrado, continuando...`);
-                    resolve(); // Não falhar se o script não existir
-                };
-                document.head.appendChild(script);
-            });
+            await loadScript(scriptFile);
         }
         
         // Para o dashboard, recarregar os gráficos
@@ -253,6 +254,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 100);
         }
+    }
+    
+    // Função auxiliar para carregar scripts
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            // Remover script anterior se existir
+            const existingScript = document.querySelector(`script[src="${src}"]`);
+            if (existingScript) {
+                existingScript.remove();
+            }
+            
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = () => {
+                console.warn(`Script ${src} não encontrado, continuando...`);
+                resolve(); // Não falhar se o script não existir
+            };
+            document.head.appendChild(script);
+        });
     }
     
     // Função para obter conteúdo da página inicial
