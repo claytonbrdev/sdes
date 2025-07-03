@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGQ OTI - Consulta de Retornados</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">SGQ OTI</div>
+    <ul>
+      <li><a href="index.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+      <li>
+        <a href="#"><i class="fas fa-box me-2"></i>Cadastros</a>
+        <ul class="submenu">
+          <li><a href="cadastro-toners.html">Cadastro de Toners</a></li>
+          <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+          <li><a href="cadastro-filiais.html">Cadastro de Filiais</a></li>
+          <li><a href="cadastro-setores.html">Cadastro de Setores</a></li>
+          <li><a href="cadastro-clientes.html">Cadastro de Clientes</a></li>
+          <li><a href="titulos-pop-it.html">Títulos de POP / IT</a></li>
+          <li><a href="titulos-processos.html">Títulos de Processos</a></li>
+          <li><a href="status-garantia.html">Cadastro de Status de Garantia</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-recycle me-2"></i>Toners Retornados</a>
+        <ul class="submenu show">
+          <li><a href="registro-retornados.html">Registro de Retornados</a></li>
+          <li><a href="consulta-retornados.html" class="active">Consulta de Retornados</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-shield-alt me-2"></i>Garantias</a>
+        <ul class="submenu">
+          <li><a href="#">Registrar Garantias</a></li>
+          <li><a href="#">Consulta de Garantias</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-folder me-2"></i>Gestão de Documentos</a>
+        <ul class="submenu">
+          <li><a href="#">Registro de Documentos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-file-alt me-2"></i>Gestão de POP / IT</a>
+        <ul class="submenu">
+          <li><a href="#">Registro de POP / IT</a></li>
+          <li><a href="#">Visualizar POP / IT</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-project-diagram me-2"></i>Gestão de Processos</a>
+        <ul class="submenu">
+          <li><a href="#">Registro de Processos</a></li>
+          <li><a href="#">Visualizar Processos</a></li>
+        </ul>
+      </li>
+      <li><a href="#"><i class="fas fa-chart-pie me-2"></i>Análise de Ishikawa</a></li>
+      <li><a href="#"><i class="fas fa-chart-bar me-2"></i>Análise de Pareto</a></li>
+      <li><a href="me-lembre.html"><i class="fas fa-bell me-2"></i>Me Lembre!</a></li>
+      <li>
+        <a href="#"><i class="fas fa-cogs me-2"></i>Configurações</a>
+        <ul class="submenu">
+          <li><a href="#">Perfis e Permissões</a></li>
+          <li><a href="#">Usuários</a></li>
+          <li><a href="parametros-retornados.html">Parâmetros do Retornados</a></li>
+          <li><a href="#">APIs</a></li>
+          <li><a href="#">SMTP</a></li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  <main class="content">
+    <div class="header">
+      <h2>Consulta de Toners Retornados</h2>
+      <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+    
+    <!-- Estatísticas Resumidas -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-recycle text-primary fa-2x mb-2"></i>
+            <h5 class="card-title" id="totalRetornados">0</h5>
+            <p class="card-text text-muted">Total Retornados</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-box text-success fa-2x mb-2"></i>
+            <h5 class="card-title" id="totalEstoque">0</h5>
+            <p class="card-text text-muted">Em Estoque</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-dollar-sign text-warning fa-2x mb-2"></i>
+            <h5 class="card-title" id="valorTotal">R$ 0,00</h5>
+            <p class="card-text text-muted">Valor Recuperado</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-calendar text-info fa-2x mb-2"></i>
+            <h5 class="card-title" id="retornadosHoje">0</h5>
+            <p class="card-text text-muted">Hoje</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Filtros Avançados -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filtros de Consulta</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <label for="filtroModelo" class="form-label">Modelo</label>
+            <select class="form-select" id="filtroModelo">
+              <option value="">Todos os modelos</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="filtroCliente" class="form-label">Cliente</label>
+            <input type="text" class="form-control" id="filtroCliente" placeholder="Nome do cliente">
+          </div>
+          <div class="col-md-3">
+            <label for="filtroFilial" class="form-label">Filial</label>
+            <select class="form-select" id="filtroFilial">
+              <option value="">Todas as filiais</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="filtroStatus" class="form-label">Status</label>
+            <select class="form-select" id="filtroStatus">
+              <option value="">Todos os status</option>
+              <option value="Estoque">Estoque</option>
+              <option value="Garantia">Garantia</option>
+              <option value="Uso Interno">Uso Interno</option>
+              <option value="Descarte">Descarte</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="row mt-3">
+          <div class="col-md-3">
+            <label for="dataInicio" class="form-label">Data Início</label>
+            <input type="date" class="form-control" id="dataInicio">
+          </div>
+          <div class="col-md-3">
+            <label for="dataFim" class="form-label">Data Fim</label>
+            <input type="date" class="form-control" id="dataFim">
+          </div>
+          <div class="col-md-3">
+            <label for="valorMinimo" class="form-label">Valor Mínimo (R$)</label>
+            <input type="number" step="0.01" class="form-control" id="valorMinimo" placeholder="0,00">
+          </div>
+          <div class="col-md-3">
+            <label for="valorMaximo" class="form-label">Valor Máximo (R$)</label>
+            <input type="number" step="0.01" class="form-control" id="valorMaximo" placeholder="999,99">
+          </div>
+        </div>
+        
+        <div class="row mt-3">
+          <div class="col-12">
+            <button class="btn btn-primary me-2" id="btnAplicarFiltros">
+              <i class="fas fa-search me-1"></i>Aplicar Filtros
+            </button>
+            <button class="btn btn-secondary" id="btnLimparFiltros">
+              <i class="fas fa-eraser me-1"></i>Limpar Filtros
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Resultados da Consulta -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-table me-2"></i>Resultados da Consulta</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-info btn-sm" id="btnExportarConsulta">
+            <i class="fas fa-file-export me-1"></i>Exportar Consulta
+          </button>
+          <button class="btn btn-success btn-sm" id="btnRelatorio">
+            <i class="fas fa-chart-bar me-1"></i>Gerar Relatório
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  <button class="btn btn-sm btn-link p-0 text-decoration-none" onclick="ordenarPor('modelo')">
+                    Modelo <i class="fas fa-sort"></i>
+                  </button>
+                </th>
+                <th>
+                  <button class="btn btn-sm btn-link p-0 text-decoration-none" onclick="ordenarPor('nomeCliente')">
+                    Cliente <i class="fas fa-sort"></i>
+                  </button>
+                </th>
+                <th>
+                  <button class="btn btn-sm btn-link p-0 text-decoration-none" onclick="ordenarPor('filial')">
+                    Filial <i class="fas fa-sort"></i>
+                  </button>
+                </th>
+                <th>
+                  <button class="btn btn-sm btn-link p-0 text-decoration-none" onclick="ordenarPor('status')">
+                    Status <i class="fas fa-sort"></i>
+                  </button>
+                </th>
+                <th>
+                  <button class="btn btn-sm btn-link p-0 text-decoration-none" onclick="ordenarPor('valorRecuperado')">
+                    Valor Recuperado <i class="fas fa-sort"></i>
+                  </button>
+                </th>
+                <th>
+                  <button class="btn btn-sm btn-link p-0 text-decoration-none" onclick="ordenarPor('dataRegistro')">
+                    Data Registro <i class="fas fa-sort"></i>
+                  </button>
+                </th>
+                <th>% Gramatura</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaConsulta">
+              <!-- Os dados serão inseridos via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Controle de paginação -->
+        <div id="paginacao" class="pagination-container">
+          <!-- Controles de paginação serão inseridos via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Modal de Detalhes -->
+  <div class="modal fade" id="modalDetalhes" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Detalhes do Toner Retornado</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalDetalhesBody">
+          <!-- Conteúdo será inserido via JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de Relatório -->
+  <div class="modal fade" id="modalRelatorio" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-chart-bar me-2"></i>Relatório de Toners Retornados</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <canvas id="chartStatus"></canvas>
+            </div>
+            <div class="col-md-6">
+              <canvas id="chartValores"></canvas>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <canvas id="chartModelos"></canvas>
+            </div>
+            <div class="col-md-6">
+              <canvas id="chartFiliais"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" id="btnExportarRelatorio">
+            <i class="fas fa-download me-1"></i>Exportar Relatório
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Elemento para transição de página -->
+  <div class="page-transition">
+    <div class="spinner"></div>
+  </div>
+  
+  <!-- Modal de mensagens -->
+  <div class="message-modal" id="messageModal">
+    <div class="message-content">
+      <div class="message-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="message-text" id="messageText">Operação realizada com sucesso!</div>
+    </div>
+    <button class="close-btn" id="closeMessage"><i class="fas fa-times"></i></button>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/consulta-retornados.js"></script>
+  
+  <script>
+    // Script para adicionar transição entre páginas
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
+        link.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href && href !== '#' && !href.startsWith('javascript')) {
+            e.preventDefault();
+            const transition = document.querySelector('.page-transition');
+            transition.classList.add('active');
+            
+            setTimeout(() => {
+              window.location.href = href;
+            }, 300);
+          }
+        });
+      });
+      
+      window.addEventListener('load', function() {
+        const transition = document.querySelector('.page-transition');
+        if (transition.classList.contains('active')) {
+          setTimeout(() => {
+            transition.classList.remove('active');
+          }, 300);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
