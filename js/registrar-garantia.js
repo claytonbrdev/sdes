@@ -21,12 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Botões
     const btnLimpar = document.getElementById('btnLimpar');
     const btnSalvar = document.getElementById('btnSalvar');
+    const btnNovoFornecedor = document.getElementById('btnNovoFornecedor');
     const btnNovoDefeito = document.getElementById('btnNovoDefeito');
     const btnImportar = document.getElementById('btnImportar');
     const btnExportar = document.getElementById('btnExportar');
     const buscarGarantia = document.getElementById('buscarGarantia');
     
     // Modais
+    const modalNovoFornecedor = new bootstrap.Modal(document.getElementById('modalNovoFornecedor'));
     const modalNovoDefeito = new bootstrap.Modal(document.getElementById('modalNovoDefeito'));
     const modalEdicao = new bootstrap.Modal(document.getElementById('modalEdicao'));
     const modalExclusao = new bootstrap.Modal(document.getElementById('modalExclusao'));
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Arrays para armazenar dados
     let garantias = [];
+    let fornecedores = [];
     let tiposDefeito = [];
     let statusGarantias = [];
     let editingId = null;
@@ -63,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners para botões
     btnLimpar.addEventListener('click', limparFormulario);
     btnSalvar.addEventListener('click', salvarGarantia);
+    btnNovoFornecedor.addEventListener('click', () => modalNovoFornecedor.show());
     btnNovoDefeito.addEventListener('click', () => modalNovoDefeito.show());
     btnImportar.addEventListener('click', () => alert('Funcionalidade de importação será implementada em breve.'));
     btnExportar.addEventListener('click', () => alert('Funcionalidade de exportação será implementada em breve.'));
@@ -73,12 +77,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Event listeners dos modais
+    document.getElementById('btnSalvarFornecedor').addEventListener('click', salvarNovoFornecedor);
     document.getElementById('btnSalvarDefeito').addEventListener('click', salvarNovoDefeito);
     document.getElementById('btnSalvarEdicao').addEventListener('click', salvarEdicao);
     document.getElementById('btnConfirmarExclusao').addEventListener('click', confirmarExclusao);
     
     // Função para carregar dados iniciais
     function carregarDados() {
+        // Carregar fornecedores do localStorage
+        const fornecedoresArmazenados = localStorage.getItem('fornecedores');
+        if (fornecedoresArmazenados) {
+            fornecedores = JSON.parse(fornecedoresArmazenados);
+        } else {
+            // Fornecedores padrão
+            fornecedores = [
+                {
+                    id: 1,
+                    nome: 'Fornecedor ABC Ltda',
+                    linkRMA: 'https://rma.fornecedorabc.com.br',
+                    contato: '(11) 99999-9999 - João Silva',
+                    observacao: 'Fornecedor principal de toners compatíveis',
+                    dataCadastro: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    nome: 'Suprimentos XYZ S.A.',
+                    linkRMA: 'https://garantia.suprimentosxyz.com',
+                    contato: 'suporte@suprimentosxyz.com',
+                    observacao: 'Especializado em toners originais',
+                    dataCadastro: new Date().toISOString()
+                }
+            ];
+            localStorage.setItem('fornecedores', JSON.stringify(fornecedores));
+        }
+        
         // Carregar tipos de defeito do localStorage
         const tiposArmazenados = localStorage.getItem('tiposDefeito');
         if (tiposArmazenados) {
@@ -118,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     id: 1,
                     dataRecebimento: '2024-01-15',
-                    fornecedor: 'Fornecedor ABC',
+                    fornecedor: 'Fornecedor ABC Ltda',
                     referenciaProduto: 'HP CF258A',
                     numeroNF: '123456',
                     quantidadeRecebida: 100,
@@ -129,6 +161,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     statusGarantia: 'Aprovado',
                     responsavel: 'João Silva',
                     observacoes: 'Lote com defeito de fabricação',
+                    dataRegistro: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    dataRecebimento: '2024-01-20',
+                    fornecedor: 'Suprimentos XYZ S.A.',
+                    referenciaProduto: 'Brother TN-217C',
+                    numeroNF: '789012',
+                    quantidadeRecebida: 50,
+                    quantidadeTestada: 48,
+                    quantidadeDefeito: 3,
+                    percentualDefeito: 6.25,
+                    tipoDefeito: 'Impressão com falhas',
+                    statusGarantia: 'Pendente',
+                    responsavel: 'Maria Santos',
+                    observacoes: 'Aguardando análise do fornecedor',
                     dataRegistro: new Date().toISOString()
                 }
             ];
@@ -142,6 +190,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para preencher os selects
     function preencherSelects() {
+        // Preencher fornecedores
+        const selectsFornecedores = [fornecedor, document.getElementById('editFornecedor')];
+        selectsFornecedores.forEach(select => {
+            if (select) {
+                select.innerHTML = '<option value="">Selecione o fornecedor</option>';
+                fornecedores.forEach(f => {
+                    const option = document.createElement('option');
+                    option.value = f.nome;
+                    option.textContent = f.nome;
+                    select.appendChild(option);
+                });
+            }
+        });
+        
         // Preencher tipos de defeito
         tipoDefeito.innerHTML = '<option value="">Selecione o tipo de defeito</option>';
         tiposDefeito.forEach(tipo => {
@@ -152,8 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Preencher status de garantia
-        const selects = [statusGarantia, document.getElementById('editStatusGarantia')];
-        selects.forEach(select => {
+        const selectsStatus = [statusGarantia, document.getElementById('editStatusGarantia')];
+        selectsStatus.forEach(select => {
             if (select) {
                 select.innerHTML = '<option value="">Selecione o status</option>';
                 statusGarantias.forEach(status => {
@@ -251,6 +313,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Função para salvar novo fornecedor
+    function salvarNovoFornecedor() {
+        const novoNome = document.getElementById('novoNomeFornecedor').value.trim();
+        const novoContato = document.getElementById('novoContatoFornecedor').value.trim();
+        
+        if (!novoNome) {
+            alert('Por favor, digite o nome do fornecedor.');
+            return;
+        }
+        
+        if (fornecedores.find(f => f.nome === novoNome)) {
+            alert('Este fornecedor já existe.');
+            return;
+        }
+        
+        const novoFornecedor = {
+            id: Date.now(),
+            nome: novoNome,
+            linkRMA: '',
+            contato: novoContato,
+            observacao: '',
+            dataCadastro: new Date().toISOString()
+        };
+        
+        fornecedores.push(novoFornecedor);
+        localStorage.setItem('fornecedores', JSON.stringify(fornecedores));
+        
+        // Atualizar select
+        const option = document.createElement('option');
+        option.value = novoNome;
+        option.textContent = novoNome;
+        fornecedor.appendChild(option);
+        
+        // Selecionar o novo fornecedor
+        fornecedor.value = novoNome;
+        
+        modalNovoFornecedor.hide();
+        document.getElementById('novoNomeFornecedor').value = '';
+        document.getElementById('novoContatoFornecedor').value = '';
+        mostrarMensagem('Novo fornecedor cadastrado com sucesso!', 'success');
+    }
+    
     // Função para salvar garantia
     function salvarGarantia() {
         if (!validarFormulario()) {
@@ -261,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const garantia = {
             id: Date.now(),
             dataRecebimento: dataRecebimento.value,
-            fornecedor: fornecedor.value.trim(),
+            fornecedor: fornecedor.value,
             referenciaProduto: referenciaProduto.value.trim(),
             numeroNF: numeroNF.value.trim(),
             quantidadeRecebida: parseInt(quantidadeRecebida.value),
@@ -499,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const editResponsavel = document.getElementById('editResponsavel');
         const editObservacoes = document.getElementById('editObservacoes');
         
-        if (!editFornecedor.value.trim() || !editReferenciaProduto.value.trim() || 
+        if (!editFornecedor.value || !editReferenciaProduto.value.trim() || 
             !editStatusGarantia.value || !editResponsavel.value.trim()) {
             mostrarMensagem('Por favor, preencha todos os campos obrigatórios.', 'error');
             return;
@@ -507,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const garantia = garantias.find(g => g.id === editingId);
         if (garantia) {
-            garantia.fornecedor = editFornecedor.value.trim();
+            garantia.fornecedor = editFornecedor.value;
             garantia.referenciaProduto = editReferenciaProduto.value.trim();
             garantia.statusGarantia = editStatusGarantia.value;
             garantia.responsavel = editResponsavel.value.trim();
@@ -534,6 +638,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const garantia = garantias.find(g => g.id === id);
         if (garantia) {
             editingId = id;
+            
+            // Atualizar selects antes de preencher
+            preencherSelects();
+            
             document.getElementById('editFornecedor').value = garantia.fornecedor;
             document.getElementById('editReferenciaProduto').value = garantia.referenciaProduto;
             document.getElementById('editStatusGarantia').value = garantia.statusGarantia;

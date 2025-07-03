@@ -34,7 +34,15 @@
             </div>
             <div class="col-md-4">
               <label for="fornecedor" class="form-label">Fornecedor</label>
-              <input type="text" class="form-control" id="fornecedor" placeholder="Nome do fornecedor" required>
+              <div class="input-group">
+                <select class="form-select" id="fornecedor" required>
+                  <option value="">Selecione o fornecedor</option>
+                  <!-- Opções carregadas via JavaScript -->
+                </select>
+                <button class="btn btn-success" type="button" id="btnNovoFornecedor" title="Cadastrar novo fornecedor">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
             </div>
             <div class="col-md-4">
               <label for="referenciaProduto" class="form-label">Referência do Produto</label>
@@ -199,6 +207,32 @@
     </div>
   </main>
   
+  <!-- Modal de Novo Fornecedor -->
+  <div class="modal fade" id="modalNovoFornecedor" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Novo Fornecedor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="novoNomeFornecedor" class="form-label">Nome do Fornecedor</label>
+            <input type="text" class="form-control" id="novoNomeFornecedor" placeholder="Ex: Fornecedor ABC Ltda">
+          </div>
+          <div class="mb-3">
+            <label for="novoContatoFornecedor" class="form-label">Contato</label>
+            <input type="text" class="form-control" id="novoContatoFornecedor" placeholder="Telefone, e-mail ou nome">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnSalvarFornecedor">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- Modal de Novo Tipo de Defeito -->
   <div class="modal fade" id="modalNovoDefeito" tabindex="-1">
     <div class="modal-dialog">
@@ -234,7 +268,9 @@
             <div class="row mb-3">
               <div class="col-md-6">
                 <label for="editFornecedor" class="form-label">Fornecedor</label>
-                <input type="text" class="form-control" id="editFornecedor" required>
+                <select class="form-select" id="editFornecedor" required>
+                  <option value="">Selecione o fornecedor</option>
+                </select>
               </div>
               <div class="col-md-6">
                 <label for="editReferenciaProduto" class="form-label">Referência do Produto</label>
