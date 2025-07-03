@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
         'parametros-retornados': 'parametros-retornados.html'
     };
     
+    // Configurar cards que viram
+    setupFlipCards();
+    
     // Event listeners para navegação
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -41,9 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
     backButton.addEventListener('click', function() {
         navigateToPage('inicio');
     });
-    
-    // Configurar cards que viram
-    setupFlipCards();
     
     // Função principal de navegação
     async function navigateToPage(page) {
