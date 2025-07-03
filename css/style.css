@@ -1,0 +1,366 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease;
+}
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background-color: #1c1f26;
+  color: #d1d1d1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px 10px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+.sidebar .logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: left;
+  padding-left: 15px;
+  margin-bottom: 30px;
+  color: #fff;
+}
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.sidebar ul li {
+  padding: 10px 15px;
+  position: relative;
+}
+.sidebar ul li:hover {
+  background-color: #2a2d36;
+  border-radius: 6px;
+}
+.sidebar ul li a {
+  color: #d1d1d1;
+  text-decoration: none;
+  display: block;
+  font-size: 0.95rem;
+}
+.submenu {
+  display: none;
+  padding-left: 15px;
+}
+.submenu li {
+  padding: 6px 0;
+}
+.submenu li a {
+  color: #bdbdbd;
+  font-size: 0.9rem;
+}
+.submenu li a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+.content {
+  margin-left: 260px;
+  padding: 30px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+.submenu.show {
+  display: block !important;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos para a página de cadastro de toners */
+.active {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+.table th {
+  font-weight: 600;
+}
+.badge {
+  padding: 6px 10px;
+}
+.form-label {
+  font-weight: 500;
+}
+.is-invalid {
+  border-color: #dc3545;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.card-header {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para paginação */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+.pagination-info {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.pagination-nav {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination-nav button {
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.pagination-nav button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+/* Animações para elementos da tabela */
+.table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Animações para botões */
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Animações para formulários */
+.form-control, .form-select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Transição de página */
+.page-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.page-transition.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.page-transition .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 123, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #007bff;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estilos para o modal de mensagens */
+.message-modal {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-weight: 500;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 300px;
+  max-width: 400px;
+  transform: translateX(150%);
+  transition: transform 0.4s ease-in-out;
+}
+
+.message-modal.show {
+  transform: translateX(0);
+}
+
+.message-modal.success {
+  background-color: #28a745;
+  border-left: 5px solid #1e7e34;
+}
+
+.message-modal.error {
+  background-color: #dc3545;
+  border-left: 5px solid #bd2130;
+}
+
+.message-modal .message-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.message-modal .message-icon {
+  font-size: 1.5rem;
+}
+
+.message-modal .message-text {
+  flex-grow: 1;
+}
+
+.message-modal .close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 10px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.message-modal .close-btn:hover {
+  opacity: 1;
+}
+
+/* Estilos específicos para Me Lembre! */
+.lembrete-card {
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.lembrete-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.lembrete-card .card-body {
+  padding: 1rem;
+}
+
+/* Cores das bordas por prioridade */
+.lembrete-card[data-prioridade="Baixa"] {
+  border-left-color: #28a745;
+}
+
+.lembrete-card[data-prioridade="Normal"] {
+  border-left-color: #007bff;
+}
+
+.lembrete-card[data-prioridade="Alta"] {
+  border-left-color: #ffc107;
+}
+
+.lembrete-card[data-prioridade="Urgente"] {
+  border-left-color: #dc3545;
+}
+
+/* Animação para estatísticas */
+.card .fa-2x {
+  transition: transform 0.3s ease;
+}
+
+.card:hover .fa-2x {
+  transform: scale(1.1);
+}
+
+/* Estilos para badges de categoria */
+.badge.bg-light {
+  color: #495057 !important;
+  border: 1px solid #dee2e6;
+}
+
+/* Responsividade para Me Lembre! */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+    padding: 15px;
+  }
+  
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .card-body .d-flex.gap-1 {
+    flex-wrap: wrap;
+  }
+  
+  .pagination-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Estilos para notificações */
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

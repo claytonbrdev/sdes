@@ -1,0 +1,24 @@
+{
+  "name": "sgq-oti-system",
+  "version": "1.0.0",
+  "description": "Sistema de Gestão da Qualidade OTI",
+  "main": "index.html",
+  "scripts": {
+    "dev": "http-server . -p 3000 -o",
+    "start": "http-server . -p 3000",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": [
+    "quality-management",
+    "toner-management",
+    "audit-system"
+  ],
+  "author": "SGQ OTI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

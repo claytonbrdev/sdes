@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGQ OTI - Parâmetros do Retornados</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">SGQ OTI</div>
+    <ul>
+      <li><a href="index.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+      <li>
+        <a href="#"><i class="fas fa-box me-2"></i>Cadastros</a>
+        <ul class="submenu">
+          <li><a href="cadastro-toners.html">Cadastro de Toners</a></li>
+          <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+          <li><a href="cadastro-filiais.html">Cadastro de Filiais</a></li>
+          <li><a href="cadastro-setores.html">Cadastro de Setores</a></li>
+          <li><a href="cadastro-clientes.html">Cadastro de Clientes</a></li>
+          <li><a href="titulos-pop-it.html">Títulos de POP / IT</a></li>
+          <li><a href="titulos-processos.html">Títulos de Processos</a></li>
+          <li><a href="status-garantia.html">Cadastro de Status de Garantia</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-recycle me-2"></i>Toners Retornados</a>
+        <ul class="submenu">
+          <li><a href="registro-retornados.html">Registro de Retornados</a></li>
+          <li><a href="consulta-retornados.html">Consulta de Retornados</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-shield-alt me-2"></i>Garantias</a>
+        <ul class="submenu">
+          <li><a href="#">Registrar Garantias</a></li>
+          <li><a href="#">Consulta de Garantias</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-folder me-2"></i>Gestão de Documentos</a>
+        <ul class="submenu">
+          <li><a href="#">Registro de Documentos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-file-alt me-2"></i>Gestão de POP / IT</a>
+        <ul class="submenu">
+          <li><a href="#">Registro de POP / IT</a></li>
+          <li><a href="#">Visualizar POP / IT</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-project-diagram me-2"></i>Gestão de Processos</a>
+        <ul class="submenu">
+          <li><a href="#">Registro de Processos</a></li>
+          <li><a href="#">Visualizar Processos</a></li>
+        </ul>
+      </li>
+      <li><a href="#"><i class="fas fa-chart-pie me-2"></i>Análise de Ishikawa</a></li>
+      <li><a href="#"><i class="fas fa-chart-bar me-2"></i>Análise de Pareto</a></li>
+      <li><a href="me-lembre.html"><i class="fas fa-bell me-2"></i>Me Lembre!</a></li>
+      <li>
+        <a href="#"><i class="fas fa-cogs me-2"></i>Configurações</a>
+        <ul class="submenu show">
+          <li><a href="#">Perfis e Permissões</a></li>
+          <li><a href="#">Usuários</a></li>
+          <li><a href="parametros-retornados.html" class="active">Parâmetros do Retornados</a></li>
+          <li><a href="#">APIs</a></li>
+          <li><a href="#">SMTP</a></li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  <main class="content">
+    <div class="header">
+      <h2>Parâmetros do Retornados</h2>
+      <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+    
+    <div class="alert alert-info">
+      <h5><i class="fas fa-info-circle me-2"></i>Configuração das Regras de Classificação</h5>
+      <p class="mb-0">Configure as faixas de gramatura que determinam o destino dos toners retornados. Estas regras são aplicadas automaticamente no sistema de registro de retornados.</p>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>Regras de Classificação por % de Gramatura</h5>
+      </div>
+      <div class="card-body">
+        <form id="formParametros">
+          <!-- Regra 1: Descarte -->
+          <div class="card mb-3 border-danger">
+            <div class="card-header bg-danger text-white">
+              <h6 class="mb-0"><i class="fas fa-trash me-2"></i>Regra 1: Descarte</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="descarte_min" class="form-label">% Mínima</label>
+                  <input type="number" class="form-control" id="descarte_min" min="0" max="100" step="0.1" value="0">
+                </div>
+                <div class="col-md-3">
+                  <label for="descarte_max" class="form-label">% Máxima</label>
+                  <input type="number" class="form-control" id="descarte_max" min="0" max="100" step="0.1" value="5">
+                </div>
+                <div class="col-md-6">
+                  <label for="descarte_acao" class="form-label">Ação Orientada</label>
+                  <input type="text" class="form-control" id="descarte_acao" value="Descarte o toner" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Regra 2: Teste para Uso Interno -->
+          <div class="card mb-3 border-warning">
+            <div class="card-header bg-warning text-dark">
+              <h6 class="mb-0"><i class="fas fa-vial me-2"></i>Regra 2: Teste para Uso Interno</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="uso_interno_min" class="form-label">% Mínima</label>
+                  <input type="number" class="form-control" id="uso_interno_min" min="0" max="100" step="0.1" value="6">
+                </div>
+                <div class="col-md-3">
+                  <label for="uso_interno_max" class="form-label">% Máxima</label>
+                  <input type="number" class="form-control" id="uso_interno_max" min="0" max="100" step="0.1" value="40">
+                </div>
+                <div class="col-md-6">
+                  <label for="uso_interno_acao" class="form-label">Ação Orientada</label>
+                  <input type="text" class="form-control" id="uso_interno_acao" value="Teste o toner. Se bom → Uso Interno. Se ruim → Descarte" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Regra 3: Teste para Estoque -->
+          <div class="card mb-3 border-info">
+            <div class="card-header bg-info text-white">
+              <h6 class="mb-0"><i class="fas fa-box me-2"></i>Regra 3: Teste para Estoque</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="estoque_min" class="form-label">% Mínima</label>
+                  <input type="number" class="form-control" id="estoque_min" min="0" max="100" step="0.1" value="41">
+                </div>
+                <div class="col-md-3">
+                  <label for="estoque_max" class="form-label">% Máxima</label>
+                  <input type="number" class="form-control" id="estoque_max" min="0" max="100" step="0.1" value="80">
+                </div>
+                <div class="col-md-6">
+                  <label for="estoque_acao" class="form-label">Ação Orientada</label>
+                  <input type="text" class="form-control" id="estoque_acao" value="Teste o toner. Se bom → Estoque (com % na caixa). Se ruim → Garantia" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Regra 4: Teste como Novo -->
+          <div class="card mb-3 border-success">
+            <div class="card-header bg-success text-white">
+              <h6 class="mb-0"><i class="fas fa-star me-2"></i>Regra 4: Teste como Novo</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="novo_min" class="form-label">% Mínima</label>
+                  <input type="number" class="form-control" id="novo_min" min="0" max="100" step="0.1" value="81">
+                </div>
+                <div class="col-md-3">
+                  <label for="novo_max" class="form-label">% Máxima</label>
+                  <input type="number" class="form-control" id="novo_max" min="0" max="100" step="0.1" value="100">
+                </div>
+                <div class="col-md-6">
+                  <label for="novo_acao" class="form-label">Ação Orientada</label>
+                  <input type="text" class="form-control" id="novo_acao" value="Teste o toner. Se bom → Estoque (como novo). Se ruim → Garantia" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" id="btnRestaurarPadrao">
+              <i class="fas fa-undo me-1"></i>Restaurar Padrão
+            </button>
+            <button type="button" class="btn btn-primary" id="btnSalvar">
+              <i class="fas fa-save me-1"></i>Salvar Configurações
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Visualização das Regras Ativas -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-eye me-2"></i>Regras Ativas - Visualização</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>Faixa de Gramatura</th>
+                <th>Ação Orientada pelo Sistema</th>
+                <th>Status no Grid</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaRegras">
+              <!-- Será preenchida via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Elemento para transição de página -->
+  <div class="page-transition">
+    <div class="spinner"></div>
+  </div>
+  
+  <!-- Modal de mensagens -->
+  <div class="message-modal" id="messageModal">
+    <div class="message-content">
+      <div class="message-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="message-text" id="messageText">Operação realizada com sucesso!</div>
+    </div>
+    <button class="close-btn" id="closeMessage"><i class="fas fa-times"></i></button>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/parametros-retornados.js"></script>
+  
+  <script>
+    // Script para adicionar transição entre páginas
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
+        link.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href && href !== '#' && !href.startsWith('javascript')) {
+            e.preventDefault();
+            const transition = document.querySelector('.page-transition');
+            transition.classList.add('active');
+            
+            setTimeout(() => {
+              window.location.href = href;
+            }, 300);
+          }
+        });
+      });
+      
+      window.addEventListener('load', function() {
+        const transition = document.querySelector('.page-transition');
+        if (transition.classList.contains('active')) {
+          setTimeout(() => {
+            transition.classList.remove('active');
+          }, 300);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
