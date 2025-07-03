@@ -3,135 +3,200 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SGQ OTI - Painel</title>
+  <title>SGQ OTI - Sistema de Gestão da Qualidade</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Estilos para transições suaves */
+    .page-content {
+      opacity: 1;
+      transform: translateX(0);
+      transition: all 0.3s ease-in-out;
+    }
+    
+    .page-content.fade-out {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    
+    .page-content.fade-in {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    
+    .back-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: none;
+      animation: slideInRight 0.3s ease-out;
+    }
+    
+    .back-button.show {
+      display: block;
+    }
+    
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 260px;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    
+    .loading-overlay.show {
+      display: flex;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
+  <!-- Menu lateral fixo -->
   <aside class="sidebar">
     <div class="logo">SGQ OTI</div>
     <ul>
-      <li><a href="index.html" class="active"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+      <li><a href="#" data-page="dashboard" class="nav-link active"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
       <li>
-        <a href="#"><i class="fas fa-box me-2"></i>Cadastros</a>
+        <a href="#" class="submenu-toggle"><i class="fas fa-box me-2"></i>Cadastros</a>
         <ul class="submenu">
-          <li><a href="cadastro-toners.html">Cadastro de Toners</a></li>
-          <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
-          <li><a href="cadastro-filiais.html">Cadastro de Filiais</a></li>
-          <li><a href="cadastro-setores.html">Cadastro de Setores</a></li>
-          <li><a href="cadastro-clientes.html">Cadastro de Clientes</a></li>
-          <li><a href="titulos-pop-it.html">Títulos de POP / IT</a></li>
-          <li><a href="titulos-processos.html">Títulos de Processos</a></li>
-          <li><a href="status-garantia.html">Cadastro de Status de Garantia</a></li>
+          <li><a href="#" data-page="cadastro-toners" class="nav-link">Cadastro de Toners</a></li>
+          <li><a href="#" data-page="cadastro-fornecedores" class="nav-link">Cadastro de Fornecedores</a></li>
+          <li><a href="#" data-page="cadastro-filiais" class="nav-link">Cadastro de Filiais</a></li>
+          <li><a href="#" data-page="cadastro-setores" class="nav-link">Cadastro de Setores</a></li>
+          <li><a href="#" data-page="cadastro-clientes" class="nav-link">Cadastro de Clientes</a></li>
+          <li><a href="#" data-page="titulos-pop-it" class="nav-link">Títulos de POP / IT</a></li>
+          <li><a href="#" data-page="titulos-processos" class="nav-link">Títulos de Processos</a></li>
+          <li><a href="#" data-page="status-garantia" class="nav-link">Cadastro de Status de Garantia</a></li>
         </ul>
       </li>
       <li>
-        <a href="#"><i class="fas fa-recycle me-2"></i>Toners Retornados</a>
+        <a href="#" class="submenu-toggle"><i class="fas fa-recycle me-2"></i>Toners Retornados</a>
         <ul class="submenu">
-          <li><a href="registro-retornados.html">Registro de Retornados</a></li>
-          <li><a href="consulta-retornados.html">Consulta de Retornados</a></li>
+          <li><a href="#" data-page="registro-retornados" class="nav-link">Registro de Retornados</a></li>
+          <li><a href="#" data-page="consulta-retornados" class="nav-link">Consulta de Retornados</a></li>
         </ul>
       </li>
       <li>
-        <a href="#"><i class="fas fa-shield-alt me-2"></i>Garantias</a>
+        <a href="#" class="submenu-toggle"><i class="fas fa-shield-alt me-2"></i>Garantias</a>
         <ul class="submenu">
-          <li><a href="registrar-garantia.html">Registrar Garantias</a></li>
-          <li><a href="#">Consulta de Garantias</a></li>
+          <li><a href="#" data-page="registrar-garantia" class="nav-link">Registrar Garantias</a></li>
+          <li><a href="#" data-page="consulta-garantias" class="nav-link">Consulta de Garantias</a></li>
         </ul>
       </li>
       <li>
-        <a href="#"><i class="fas fa-folder me-2"></i>Gestão de Documentos</a>
+        <a href="#" class="submenu-toggle"><i class="fas fa-folder me-2"></i>Gestão de Documentos</a>
         <ul class="submenu">
-          <li><a href="#">Registro de Documentos</a></li>
+          <li><a href="#" data-page="registro-documentos" class="nav-link">Registro de Documentos</a></li>
         </ul>
       </li>
       <li>
-        <a href="#"><i class="fas fa-file-alt me-2"></i>Gestão de POP / IT</a>
+        <a href="#" class="submenu-toggle"><i class="fas fa-file-alt me-2"></i>Gestão de POP / IT</a>
         <ul class="submenu">
-          <li><a href="#">Registro de POP / IT</a></li>
-          <li><a href="#">Visualizar POP / IT</a></li>
+          <li><a href="#" data-page="registro-pop-it" class="nav-link">Registro de POP / IT</a></li>
+          <li><a href="#" data-page="visualizar-pop-it" class="nav-link">Visualizar POP / IT</a></li>
         </ul>
       </li>
       <li>
-        <a href="#"><i class="fas fa-project-diagram me-2"></i>Gestão de Processos</a>
+        <a href="#" class="submenu-toggle"><i class="fas fa-project-diagram me-2"></i>Gestão de Processos</a>
         <ul class="submenu">
-          <li><a href="#">Registro de Processos</a></li>
-          <li><a href="#">Visualizar Processos</a></li>
+          <li><a href="#" data-page="registro-processos" class="nav-link">Registro de Processos</a></li>
+          <li><a href="#" data-page="visualizar-processos" class="nav-link">Visualizar Processos</a></li>
         </ul>
       </li>
-      <li><a href="#"><i class="fas fa-chart-pie me-2"></i>Análise de Ishikawa</a></li>
-      <li><a href="#"><i class="fas fa-chart-bar me-2"></i>Análise de Pareto</a></li>
-      <li><a href="me-lembre.html"><i class="fas fa-bell me-2"></i>Me Lembre!</a></li>
+      <li><a href="#" data-page="analise-ishikawa" class="nav-link"><i class="fas fa-chart-pie me-2"></i>Análise de Ishikawa</a></li>
+      <li><a href="#" data-page="analise-pareto" class="nav-link"><i class="fas fa-chart-bar me-2"></i>Análise de Pareto</a></li>
+      <li><a href="#" data-page="me-lembre" class="nav-link"><i class="fas fa-bell me-2"></i>Me Lembre!</a></li>
       <li>
-        <a href="#"><i class="fas fa-cogs me-2"></i>Configurações</a>
+        <a href="#" class="submenu-toggle"><i class="fas fa-cogs me-2"></i>Configurações</a>
         <ul class="submenu">
-          <li><a href="#">Perfis e Permissões</a></li>
-          <li><a href="#">Usuários</a></li>
-          <li><a href="parametros-retornados.html">Parâmetros do Retornados</a></li>
-          <li><a href="#">APIs</a></li>
-          <li><a href="#">SMTP</a></li>
+          <li><a href="#" data-page="perfis-permissoes" class="nav-link">Perfis e Permissões</a></li>
+          <li><a href="#" data-page="usuarios" class="nav-link">Usuários</a></li>
+          <li><a href="#" data-page="parametros-retornados" class="nav-link">Parâmetros do Retornados</a></li>
+          <li><a href="#" data-page="apis" class="nav-link">APIs</a></li>
+          <li><a href="#" data-page="smtp" class="nav-link">SMTP</a></li>
         </ul>
       </li>
     </ul>
   </aside>
-  <main class="content">
-    <div class="header">
-      <h2>Dashboard</h2>
-      <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Sair</button>
-    </div>
-    <div class="row mb-4">
-      <div class="col-md-6"><div class="card p-3"><h5>Gráfico de Auditorias</h5><canvas id="chartAuditorias"></canvas></div></div>
-      <div class="col-md-6"><div class="card p-3"><h5>Gráfico de Retornos</h5><canvas id="chartRetornos"></canvas></div></div>
-    </div>
-    <div class="row mb-4">
-      <div class="col-md-6"><div class="card p-3"><h5>Garantias por Status</h5><canvas id="chartGarantias"></canvas></div></div>
-      <div class="col-md-6"><div class="card p-3"><h5>Documentos Ativos</h5><canvas id="chartDocumentos"></canvas></div></div>
-    </div>
-    <div class="row">
-      <div class="col-md-6"><div class="card p-3"><h5>Garantias por Fornecedor</h5><canvas id="chartGarantiasFornecedor"></canvas></div></div>
-      <div class="col-md-6"><div class="card p-3"><h5>Toners Recuperados por Mês</h5><canvas id="chartTonersRecuperados"></canvas></div></div>
-    </div>
-  </main>
-  <!-- Elemento para transição de página -->
-  <div class="page-transition">
+
+  <!-- Botão de voltar -->
+  <button class="btn btn-primary back-button" id="backButton">
+    <i class="fas fa-arrow-left me-2"></i>Voltar ao Dashboard
+  </button>
+
+  <!-- Overlay de loading -->
+  <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
   </div>
-  
+
+  <!-- Área de conteúdo principal -->
+  <main class="content">
+    <div class="page-content" id="pageContent">
+      <!-- Dashboard inicial -->
+      <div class="header">
+        <h2>Dashboard</h2>
+        <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Sair</button>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-6"><div class="card p-3"><h5>Gráfico de Auditorias</h5><canvas id="chartAuditorias"></canvas></div></div>
+        <div class="col-md-6"><div class="card p-3"><h5>Gráfico de Retornos</h5><canvas id="chartRetornos"></canvas></div></div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-6"><div class="card p-3"><h5>Garantias por Status</h5><canvas id="chartGarantias"></canvas></div></div>
+        <div class="col-md-6"><div class="card p-3"><h5>Documentos Ativos</h5><canvas id="chartDocumentos"></canvas></div></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><div class="card p-3"><h5>Garantias por Fornecedor</h5><canvas id="chartGarantiasFornecedor"></canvas></div></div>
+        <div class="col-md-6"><div class="card p-3"><h5>Toners Recuperados por Mês</h5><canvas id="chartTonersRecuperados"></canvas></div></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de mensagens -->
+  <div class="message-modal" id="messageModal">
+    <div class="message-content">
+      <div class="message-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="message-text" id="messageText">Operação realizada com sucesso!</div>
+    </div>
+    <button class="close-btn" id="closeMessage"><i class="fas fa-times"></i></button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/spa-navigation.js"></script>
   <script src="js/script.js"></script>
   <script src="js/charts-init.js"></script>
-  
-  <script>
-    // Script para adicionar transição entre páginas
-    document.addEventListener('DOMContentLoaded', function() {
-      // Adicionar evento de clique em todos os links de navegação
-      document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
-        link.addEventListener('click', function(e) {
-          const href = this.getAttribute('href');
-          if (href && href !== '#' && !href.startsWith('javascript')) {
-            e.preventDefault();
-            const transition = document.querySelector('.page-transition');
-            transition.classList.add('active');
-            
-            setTimeout(() => {
-              window.location.href = href;
-            }, 300);
-          }
-        });
-      });
-      
-      // Animação ao carregar a página
-      window.addEventListener('load', function() {
-        const transition = document.querySelector('.page-transition');
-        if (transition.classList.contains('active')) {
-          setTimeout(() => {
-            transition.classList.remove('active');
-          }, 300);
-        }
-      });
-    });
-  </script>
 </body>
 </html>
