@@ -90,7 +90,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Rolar para o topo da página
-            window.scrollTo(0, 0);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
             
         } catch (error) {
             console.error('Erro ao carregar página:', error);
