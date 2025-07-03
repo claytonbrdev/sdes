@@ -3,6 +3,7 @@ body {
   margin: 0;
   background-color: #f8f9fa;
   transition: background-color 0.3s ease;
+  overflow-x: hidden;
 }
 
 .content {
@@ -553,7 +554,7 @@ body {
   flex: 1;
   /* Estilização da barra de rolagem */
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+  scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.2);
 }
 
 /* Estilização da barra de rolagem para Chrome, Edge e Safari */
@@ -563,17 +564,17 @@ body {
 }
 
 .nav-group-items::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 
 .nav-group-items::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
 }
 
 .nav-group-items::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .nav-item {
@@ -792,4 +793,83 @@ body {
     width: 80px;
     height: 80px;
   }
+}
+
+/* Remover margens brancas */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Melhorar a barra de rolagem dos submódulos */
+.nav-group-items {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.2);
+}
+
+.nav-group-items::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.nav-group-items::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.nav-group-items::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+.nav-group-items::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* Melhorar a animação do botão voltar */
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: none;
+  animation: slideInLeft 0.3s ease-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Garantir que a página ocupe toda a tela */
+.welcome-container {
+  min-height: 100vh;
+  width: 100vw;
+  margin: -30px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* Melhorar a aparência do loading */
+.loading-overlay {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(10, 77, 162, 0.2);
+  border-top: 5px solid #0a4da2;
+  border-radius: 50%;
 }

@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupNavigation();
     
     // Event listener para botão de voltar
-    backButton.addEventListener('click', function() {
+    backButton.addEventListener('click', function(e) {
+        e.preventDefault();
         navigateToPage('inicio');
     });
     
@@ -82,8 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Configurar cards que viram se estiver na página inicial
             if (page === 'inicio') {
-                setupFlipCards();
-                setupNavigation();
+                setTimeout(() => {
+                    setupFlipCards();
+                    setupNavigation();
+                }, 100);
             }
             
             // Rolar para o topo da página
@@ -103,9 +106,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurar cards que viram
     function setupFlipCards() {
+        // Remover event listeners antigos para evitar duplicação
+        document.querySelectorAll('.nav-group-front .nav-group-back-button').forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+        });
+        
+        document.querySelectorAll('.nav-group-back .nav-group-back-button.flip-back').forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+        });
+        
         // Botões para virar o card (frente para trás)
         document.querySelectorAll('.nav-group-front .nav-group-back-button').forEach(button => {
             button.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 
                 // Fechar todos os outros cards abertos primeiro
@@ -123,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Botões para voltar (trás para frente)
         document.querySelectorAll('.nav-group-back .nav-group-back-button.flip-back').forEach(button => {
             button.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 const navGroup = this.closest('.nav-group');
                 navGroup.classList.remove('flipped');
@@ -132,8 +148,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurar navegação
     function setupNavigation() {
+        // Remover event listeners antigos para evitar duplicação
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const newItem = item.cloneNode(true);
+            item.parentNode.replaceChild(newItem, item);
+        });
+        
+        // Adicionar novos event listeners
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation(); // Impedir propagação do evento
                 const page = this.getAttribute('data-page');
                 if (page && page !== currentPage) {
@@ -259,9 +283,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função auxiliar para carregar scripts
     function loadScript(src) {
         return new Promise((resolve, reject) => {
-            // Remover script anterior se existir
+            // Verificar se o script já existe
             const existingScript = document.querySelector(`script[src="${src}"]`);
             if (existingScript) {
+                // Se já existe, remover para recarregar
                 existingScript.remove();
             }
             
@@ -272,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.warn(`Script ${src} não encontrado, continuando...`);
                 resolve(); // Não falhar se o script não existir
             };
-            document.head.appendChild(script);
+            document.body.appendChild(script);
         });
     }
     
