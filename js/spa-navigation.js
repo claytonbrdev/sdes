@@ -60,6 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
     async function navigateToPage(page) {
         if (page === currentPage) return;
         
+        // Verificar se a página existe
+        if (page !== 'dashboard' && !pageFiles[page]) {
+            showMessage(`Página "${page}" ainda não foi implementada.`, 'error');
+            return;
+        }
+        
         // Mostrar loading
         showLoading();
         
@@ -111,10 +117,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Dashboard: mostrar sidebar, content com margem
             sidebar.classList.remove('hidden');
             mainContent.classList.remove('fullscreen');
+            backButton.classList.remove('show');
         } else {
             // Outras páginas: esconder sidebar, content em tela cheia
             sidebar.classList.add('hidden');
             mainContent.classList.add('fullscreen');
+            backButton.classList.add('show');
         }
     }
     
@@ -192,7 +200,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const script = document.createElement('script');
                 script.src = scriptFile;
                 script.onload = resolve;
-                script.onerror = reject;
+                script.onerror = () => {
+                    console.warn(`Script ${scriptFile} não encontrado, continuando...`);
+                    resolve(); // Não falhar se o script não existir
+                };
                 document.head.appendChild(script);
             });
         }
@@ -246,13 +257,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (submenu) {
                 submenu.classList.add('show');
             }
-        }
-        
-        // Mostrar/esconder botão de voltar
-        if (page === 'dashboard') {
-            backButton.classList.remove('show');
-        } else {
-            backButton.classList.add('show');
         }
     }
     
