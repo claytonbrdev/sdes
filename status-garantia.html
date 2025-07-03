@@ -10,72 +10,6 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="logo">SGQ OTI</div>
-    <ul>
-      <li><a href="index.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-      <li>
-        <a href="#"><i class="fas fa-box me-2"></i>Cadastros</a>
-        <ul class="submenu show">
-          <li><a href="cadastro-toners.html">Cadastro de Toners</a></li>
-          <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
-          <li><a href="cadastro-filiais.html">Cadastro de Filiais</a></li>
-          <li><a href="cadastro-setores.html">Cadastro de Setores</a></li>
-          <li><a href="cadastro-clientes.html">Cadastro de Clientes</a></li>
-          <li><a href="titulos-pop-it.html">Títulos de POP / IT</a></li>
-          <li><a href="titulos-processos.html">Títulos de Processos</a></li>
-          <li><a href="status-garantia.html" class="active">Cadastro de Status de Garantia</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#"><i class="fas fa-recycle me-2"></i>Toners Retornados</a>
-        <ul class="submenu">
-          <li><a href="registro-retornados.html">Registro de Retornados</a></li>
-          <li><a href="consulta-retornados.html">Consulta de Retornados</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#"><i class="fas fa-shield-alt me-2"></i>Garantias</a>
-        <ul class="submenu">
-          <li><a href="#">Registrar Garantias</a></li>
-          <li><a href="#">Consulta de Garantias</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#"><i class="fas fa-folder me-2"></i>Gestão de Documentos</a>
-        <ul class="submenu">
-          <li><a href="#">Registro de Documentos</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#"><i class="fas fa-file-alt me-2"></i>Gestão de POP / IT</a>
-        <ul class="submenu">
-          <li><a href="#">Registro de POP / IT</a></li>
-          <li><a href="#">Visualizar POP / IT</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#"><i class="fas fa-project-diagram me-2"></i>Gestão de Processos</a>
-        <ul class="submenu">
-          <li><a href="#">Registro de Processos</a></li>
-          <li><a href="#">Visualizar Processos</a></li>
-        </ul>
-      </li>
-      <li><a href="#"><i class="fas fa-chart-pie me-2"></i>Análise de Ishikawa</a></li>
-      <li><a href="#"><i class="fas fa-chart-bar me-2"></i>Análise de Pareto</a></li>
-      <li><a href="me-lembre.html"><i class="fas fa-bell me-2"></i>Me Lembre!</a></li>
-      <li>
-        <a href="#"><i class="fas fa-cogs me-2"></i>Configurações</a>
-        <ul class="submenu">
-          <li><a href="#">Perfis e Permissões</a></li>
-          <li><a href="#">Usuários</a></li>
-          <li><a href="parametros-retornados.html">Parâmetros do Retornados</a></li>
-          <li><a href="#">APIs</a></li>
-          <li><a href="#">SMTP</a></li>
-        </ul>
-      </li>
-    </ul>
-  </aside>
   <main class="content">
     <div class="header">
       <h2>Cadastro de Status de Garantia</h2>
@@ -253,51 +187,6 @@
     </div>
   </div>
   
-  <!-- Elemento para transição de página -->
-  <div class="page-transition">
-    <div class="spinner"></div>
-  </div>
-  
-  <!-- Modal de mensagens -->
-  <div class="message-modal" id="messageModal">
-    <div class="message-content">
-      <div class="message-icon"><i class="fas fa-check-circle"></i></div>
-      <div class="message-text" id="messageText">Operação realizada com sucesso!</div>
-    </div>
-    <button class="close-btn" id="closeMessage"><i class="fas fa-times"></i></button>
-  </div>
-  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/script.js"></script>
-  <script src="js/status-garantia.js"></script>
-  
-  <script>
-    // Script para adicionar transição entre páginas
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
-        link.addEventListener('click', function(e) {
-          const href = this.getAttribute('href');
-          if (href && href !== '#' && !href.startsWith('javascript')) {
-            e.preventDefault();
-            const transition = document.querySelector('.page-transition');
-            transition.classList.add('active');
-            
-            setTimeout(() => {
-              window.location.href = href;
-            }, 300);
-          }
-        });
-      });
-      
-      window.addEventListener('load', function() {
-        const transition = document.querySelector('.page-transition');
-        if (transition.classList.contains('active')) {
-          setTimeout(() => {
-            transition.classList.remove('active');
-          }, 300);
-        }
-      });
-    });
-  </script>
 </body>
 </html>
