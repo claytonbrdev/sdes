@@ -213,9 +213,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para confirmar cliente no modal
     function confirmarClienteModal() {
         const nomeModal = document.getElementById('nomeClienteModal').value.trim();
-        if (nomeModal) {
+        const idClienteModal = idCliente.value.trim();
+        
+        if (nomeModal && idClienteModal) {
+            // Adicionar novo cliente ao sistema
+            const novoCliente = {
+                id: idClienteModal,
+                nome: nomeModal
+            };
+            
+            // Adicionar à lista local
+            clientes.push(novoCliente);
+            
+            // Salvar no localStorage de clientes
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+            
+            // Preencher campo nome
             nomeCliente.value = nomeModal;
+            
+            // Fechar modal
             modalClienteNaoEncontrado.hide();
+            
+            mostrarMensagem('Cliente cadastrado com sucesso no sistema!', 'success');
         }
     }
     
