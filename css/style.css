@@ -61,13 +61,33 @@ body {
   font-weight: bold;
 }
 
+.submenu-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.submenu-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.submenu-toggle.expanded .submenu-arrow {
+  transform: rotate(180deg);
+}
+
 .submenu {
   display: none;
   padding-left: 15px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
 }
 
 .submenu.show {
-  display: block !important;
+  display: block;
+  max-height: 500px;
   animation: slideDown 0.3s ease-in-out;
 }
 

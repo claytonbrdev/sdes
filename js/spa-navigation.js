@@ -45,8 +45,14 @@ document.addEventListener('DOMContentLoaded', function() {
         toggle.addEventListener('click', function(e) {
             e.preventDefault();
             const submenu = this.nextElementSibling;
+            const arrow = this.querySelector('.submenu-arrow');
+            
             if (submenu && submenu.classList.contains('submenu')) {
+                // Toggle do submenu
                 submenu.classList.toggle('show');
+                
+                // Toggle da seta
+                this.classList.toggle('expanded');
             }
         });
     });
@@ -256,6 +262,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const submenu = activeLink.closest('.submenu');
             if (submenu) {
                 submenu.classList.add('show');
+                
+                // Expandir o toggle do submenu pai
+                const parentToggle = submenu.previousElementSibling;
+                if (parentToggle && parentToggle.classList.contains('submenu-toggle')) {
+                    parentToggle.classList.add('expanded');
+                }
             }
         }
     }
